@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "dSL61h0ytSfjF5W1hD1665NvM9DvB9z3xf33Ni5Ae74oYaBG26WDPs48DRfeHXqsq/tbIO6ry4RvMjXS16Jm2w==",
+  "success": true,
+  "projectFilePath": "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\hoge\\.nuget\\packages\\system.commandline\\2.0.0-beta4.22272.1\\system.commandline.2.0.0-beta4.22272.1.nupkg.sha512"
+  ],
+  "logs": []
+}
