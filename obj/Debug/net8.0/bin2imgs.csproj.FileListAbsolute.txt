@@ -28,3 +28,4 @@ c:\Users\hoge\Documents\playground\bin2imgs\obj\Debug\net8.0\refint\bin2imgs.dll
 c:\Users\hoge\Documents\playground\bin2imgs\obj\Debug\net8.0\bin2imgs.pdb
 c:\Users\hoge\Documents\playground\bin2imgs\obj\Debug\net8.0\bin2imgs.genruntimeconfig.cache
 c:\Users\hoge\Documents\playground\bin2imgs\obj\Debug\net8.0\ref\bin2imgs.dll
+c:\Users\hoge\Documents\playground\bin2imgs\obj\Debug\net8.0\bin2imgs.sourcelink.json
