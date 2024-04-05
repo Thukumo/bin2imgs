@@ -11,18 +11,11 @@ namespace bin2imgs
     {
         public static void Main(string[] args)
         {
-            var rootCommand = new RootCommand
-            {
-            new Option<string>(
-                    "-f",
-                    description: "Specify input file name(filename)"),
-                new Option<bool>(
-                    "-r",
-                    getDefaultValue: () => false,
-                description: "Do mov2bin.(reverse)")
-            };
+            var rootCommand = new RootCommand("Convert any file to image files");
             rootCommand.Description = "bin2imgs";
-            bool reverse = false;
+            rootCommand.AddArgument(new Argument<string>("filename"));
+            rootCommand.AddOption(new Option<bool>(new[] { "--reverse", "-r" }, "Convert movie file to file"));
+            /*
             rootCommand.Handler = CommandHandler.Create<string, bool>((filename, rev) =>
             {
                 reverse = rev;
@@ -32,7 +25,9 @@ namespace bin2imgs
                     return;
                 }
             });
+            */
             rootCommand.InvokeAsync(args).Wait();
+            //Console.WriteLine();
         }
     }
 }
