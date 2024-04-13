@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj": {}
+    "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj": {}
   },
   "projects": {
-    "C:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj": {
+    "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
+        "projectUniqueName": "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
         "projectName": "bin2imgs",
-        "projectPath": "C:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
+        "projectPath": "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
         "packagesPath": "C:\\Users\\hoge\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\hoge\\Documents\\playground\\bin2imgs\\obj\\",
+        "outputPath": "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -49,9 +49,13 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "System.CommandLine": {
+            "OpenCvSharp4": {
               "target": "Package",
-              "version": "[2.0.0-beta4.22272.1, )"
+              "version": "[4.9.0.20240103, )"
+            },
+            "OpenCvSharp4.runtime.win": {
+              "target": "Package",
+              "version": "[4.9.0.20240103, )"
             }
           },
           "imports": [
@@ -70,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.202/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

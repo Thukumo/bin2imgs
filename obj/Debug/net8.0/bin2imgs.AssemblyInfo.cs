@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("bin2imgs")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+100fbc9b5bb203770b6ab35c56bc58164552e9c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+40e4b08c66a1c7971e9c8ff4768e3f9a7bd33e71")]
 [assembly: System.Reflection.AssemblyProductAttribute("bin2imgs")]
 [assembly: System.Reflection.AssemblyTitleAttribute("bin2imgs")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

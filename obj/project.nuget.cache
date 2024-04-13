@@ -1,10 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "LjrPXthT6cOp13FsPG1RaghOnn42XyXAOBL1ePIe1RuNJW4Md+5RyE9l6hKOCUg7I1hUymGQ3/EMWqPYo/ihRg==",
+  "dgSpecHash": "ksqZ2KQXCfeCwoQ4X0i9FJio6baHIOWqOOkwkwBnteuauRvAQ4TryXPWN67YVfMSlJ3fQ1y8zJxNWxL/66nQVQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
+  "projectFilePath": "c:\\Users\\hoge\\Documents\\playground\\bin2imgs\\bin2imgs.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\hoge\\.nuget\\packages\\system.commandline\\2.0.0-beta4.22272.1\\system.commandline.2.0.0-beta4.22272.1.nupkg.sha512"
+    "C:\\Users\\hoge\\.nuget\\packages\\opencvsharp4\\4.9.0.20240103\\opencvsharp4.4.9.0.20240103.nupkg.sha512",
+    "C:\\Users\\hoge\\.nuget\\packages\\opencvsharp4.runtime.win\\4.9.0.20240103\\opencvsharp4.runtime.win.4.9.0.20240103.nupkg.sha512",
+    "C:\\Users\\hoge\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\hoge\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
   ],
   "logs": []
 }
