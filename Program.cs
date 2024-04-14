@@ -16,6 +16,7 @@ namespace bin2imgs
             //Console.OutputEncoding = System.Text.Encoding.GetEncoding(932);
             bool rev = false;
             bool max = false;
+            bool output_video = false;
             string filename = "";
             if(args.Length < 1)
             {
@@ -23,7 +24,7 @@ namespace bin2imgs
                 //return 1;
                 Console.WriteLine("Please enter the file path.");
                 string? tmp = Console.ReadLine();
-                if(!string.IsNullOrEmpty(tmp)) filename = tmp;
+                if(!string.IsNullOrEmpty(tmp)) filename = tmp.Replace("\"", "");
                 else
                 {
                     Console.Error.WriteLine("No filename specified.");
@@ -42,9 +43,18 @@ namespace bin2imgs
                     {
                         max = true;
                     }
-                    else if(filename == "")
+                    else if(args[i] == "-h" || args[i] == "--help")
                     {
-                        filename = args[i];
+                        Console.WriteLine("Usage: bin2imgs <filename> [-r | --reverse] [-m | --max]");
+                        return 0;
+                    }
+                    else if(args[i] == "-v" || args[i] == "--video")
+                    {
+                        output_video = true;
+                    }
+                    else if(filename == "" && File.Exists(args[i].Replace("\"", "")))
+                    {
+                        filename = args[i].Replace("\"", "");;
                     }
                     else
                     {
@@ -53,7 +63,6 @@ namespace bin2imgs
                     }
                 }
             }
-            filename = filename.Replace("\"", "");
             if(filename == null)
             {
                 Console.Error.WriteLine("No filename specified.");
@@ -113,6 +122,7 @@ namespace bin2imgs
                                     mat.At<Vec3b>(y + 1, x + 1) = v;
                                 }
                             });
+
                         }
                         else
                         {
@@ -133,9 +143,9 @@ namespace bin2imgs
                             mat.At<Vec3b>(1079, n) = new Vec3b(tmp[0], tmp[1], tmp[2]);
                             mat.At<Vec3b>(1079, n+1) = new Vec3b(tmp[0], tmp[1], tmp[2]);
                         });
-                        frames.Add(mat.Clone());
+                        if(output_video) frames.Add(mat.Clone());
                         //Console.WriteLine("{0}, {1}", m.Max(list => list[0]).ToString(), m.Max(list => list[1]).ToString());
-                        //Cv2.ImWrite("hoge.jpg", mat);
+                        if(!output_video) Cv2.ImWrite("hoge.png", mat, new ImageEncodingParam(ImwriteFlags.JpegQuality, 100));
                         //Cv2.ImShow("test", mat);
                         //Cv2.WaitKey();
                     }
