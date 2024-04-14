@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading.Tasks;
 using OpenCvSharp;
 using System.Text.Encodings;
-using Microsoft.VisualBasic;
 using System.Globalization;
 
 namespace bin2imgs
@@ -16,6 +15,7 @@ namespace bin2imgs
             //Console.InputEncoding = System.Text.Encoding.GetEncoding(932);
             //Console.OutputEncoding = System.Text.Encoding.GetEncoding(932);
             bool rev = false;
+            bool max = false;
             string filename = "";
             if(args.Length < 1)
             {
@@ -37,6 +37,10 @@ namespace bin2imgs
                     if(args[i] == "-r" || args[i] == "--reverse")
                     {
                         rev = true;
+                    }
+                    else if(args[i] == "-m" || args[i] == "--max")
+                    {
+                        max = true;
                     }
                     else if(filename == "")
                     {
@@ -65,59 +69,73 @@ namespace bin2imgs
             if(!rev) using (var f = File.OpenRead(filename))
             {
                 Mat mat;
-                byte[] buf = new byte[1920 * 1080 / 8 * 3 / (2 * 2)];
-                ushort[] nbuf = new ushort[1920 * 1080 * 3 / (2 * 2)];
-                //byte[] buf = new byte[(int)(1024)];
+                var len = 1920 * (1080-2) * 3 / (2 * 2);
+                byte[] buf = new byte[len/8];
+                byte[] nbuf = new byte[len];
+                List<Mat> frames = [];
                 int bytesRead, x, y;
                     while ((bytesRead = f.Read(buf, 0, buf.Length)) > 0)
                     {
-                        //Console.WriteLine(Convert.ToBase64String(buf, 0, bytesRead));
-                        mat = new Mat(1920, 1080, MatType.CV_8UC3, new Scalar(0, 0, 0));
-                        List<List<long>> m = [];
+                        mat = new Mat(1080, 1920, MatType.CV_8UC3, new Scalar(0, 0, 0));
                         if(bytesRead == buf.Length)
                         {
-                            Parallel.For(0, 1920/2 * 1080/2 * 3 / 8 /3, (i) =>
+                            //Console.WriteLine(Environment.ProcessorCount*(cpulate/100.0));
+                            Parallel.For(0, len /(8*3), new ParallelOptions(){MaxDegreeOfParallelism = max ? Environment.ProcessorCount : ((Environment.ProcessorCount-2) > 0 ? Environment.ProcessorCount-2 : 1)}, (i) =>
+                            //Parallel.For(0, len /(8*3), (i) =>
                             {   //終了条件最後の/3は12bitsずつ処理するため
+                                //↑多分このループ処理の中で(1920*(1080-2)) * 3のジャグ配列(2次元)にしたかったんだろうけどめんどいから放置
                                 int num = i*3;
                                 string[] tmp = ["", "", ""];
                                 for(int j = 0; j < 3; j++) tmp[j] = Convert.ToString(buf[num+j], 2).PadLeft(8, '0');
                                 //for (int j = 0; j < 8; j++) ushort.TryParse(tmp[j].ToString(), out ushort tmp2);
                                 for(int j = 0; j < 3; j++) for(int k = 0; k < 8; k++)
                                 {
-                                    if(tmp[j][k] == '0') nbuf[(num+j)*8+k] = 0;
-                                    else nbuf[(num+j)*8+k] = 1;
+                                    if(tmp[j][k] == '0') nbuf[(num+j)*8+k] = 0x00;
+                                    else nbuf[(num+j)*8+k] = 0xff;
                                 }
                                 //Array.Copy(Convert.ToString(buf[i], 2).PadLeft(8, '0').Select(c => ushort.Parse(c.ToString())).ToArray(), 0, nbuf, i * 8, 8);
                             });
-                            if(false)Parallel.For(0, mat.Height / 2, (i) =>
+                            Parallel.For(0, (1080-2)/2, (i) =>
                             {
                                 y = i * 2;
-                                    ushort[] data = [0, 0, 0];
-                                    if (y != mat.Height - 1)
+                                ushort[] data = [0, 0, 0];
+                                int num;
+                                Vec3b v;
+                                for (int j = 0; j < 1920/2; j++)
                                 {
-                                    for (int j = 0; j < mat.Width / 2; j += 2)
-                                    {
-                                        x = j * 2;
-                                        mat.At<Vec3b>(y, x) = new Vec3b(255, 255, 255);
-                                        mat.At<Vec3b>(y, x + 1) = new Vec3b(255, 255, 255);
-                                        mat.At<Vec3b>(y + 1, x) = new Vec3b(255, 255, 255);
-                                        mat.At<Vec3b>(y + 1, x + 1) = new Vec3b(255, 255, 255);
-                                    }
-                                }
-                                else
-                                {
-                                    for (int j = 0; j < mat.Width / 2; j += 2)
-                                    {
-                                        x = j * 2;
-                                        mat.At<Vec3b>(y, x) = new Vec3b(255, 255, 255);
-                                        mat.At<Vec3b>(y, x + 1) = new Vec3b(255, 255, 255);
-                                        mat.At<Vec3b>(y - 1, x) = new Vec3b(255, 255, 255);
-                                        mat.At<Vec3b>(y - 1, x + 1) = new Vec3b(255, 255, 255);
-                                    }
+                                    x = j * 2;
+                                    num = mat.Width*i+j;
+                                    v = new Vec3b(nbuf[num], nbuf[num+1], nbuf[num+2]);
+                                    //Console.WriteLine(y.ToString()+" "+x.ToString());
+                                    mat.At<Vec3b>(y, x) = v;
+                                    mat.At<Vec3b>(y, x + 1) = v;
+                                    mat.At<Vec3b>(y + 1, x) = v;
+                                    mat.At<Vec3b>(y + 1, x + 1) = v;
                                 }
                             });
                         }
+                        else
+                        {
+
+                        }
+                        string binary = Convert.ToString(bytesRead, 2).PadLeft(1920*3/2, '0');
+                        Parallel.For(0, 1920/2, new ParallelOptions(){MaxDegreeOfParallelism = max ? Environment.ProcessorCount : ((Environment.ProcessorCount-2) > 0 ? Environment.ProcessorCount-2 : 1)}, (i) =>
+                        {
+                            int n = i*2;
+                            byte[] tmp = new byte[3];
+                            for(int j = 0; j < 3; j++)
+                            {
+                                if(binary[n+j] == '0') tmp[j] = 0x00;
+                                else tmp[j] = 0xff;
+                            }
+                            mat.At<Vec3b>(1078, n) = new Vec3b(tmp[0], tmp[1], tmp[2]);
+                            mat.At<Vec3b>(1078, n+1) = new Vec3b(tmp[0], tmp[1], tmp[2]);
+                            mat.At<Vec3b>(1079, n) = new Vec3b(tmp[0], tmp[1], tmp[2]);
+                            mat.At<Vec3b>(1079, n+1) = new Vec3b(tmp[0], tmp[1], tmp[2]);
+                        });
+                        frames.Add(mat.Clone());
                         //Console.WriteLine("{0}, {1}", m.Max(list => list[0]).ToString(), m.Max(list => list[1]).ToString());
+                        //Cv2.ImWrite("hoge.jpg", mat);
                         //Cv2.ImShow("test", mat);
                         //Cv2.WaitKey();
                     }
