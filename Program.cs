@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using OpenCvSharp;
 using System.Text.Encodings;
 using Microsoft.VisualBasic;
+using System.Globalization;
 
 namespace bin2imgs
 {
@@ -75,21 +76,23 @@ namespace bin2imgs
                         List<List<long>> m = [];
                         if(bytesRead == buf.Length)
                         {
-                            Parallel.For(0, 1920 * 1080 / 8 * 3 / (2 * 2), (i) =>
-                            {
-                                string tmp = Convert.ToString(buf[i], 2).PadLeft(8, '0');
+                            Parallel.For(0, 1920/2 * 1080/2 * 3 / 8 /3, (i) =>
+                            {   //終了条件最後の/3は12bitsずつ処理するため
+                                int num = i*3;
+                                string[] tmp = ["", "", ""];
+                                for(int j = 0; j < 3; j++) tmp[j] = Convert.ToString(buf[num+j], 2).PadLeft(8, '0');
                                 //for (int j = 0; j < 8; j++) ushort.TryParse(tmp[j].ToString(), out ushort tmp2);
-                                for (int j = 0; j < 8; j++)
+                                for(int j = 0; j < 3; j++) for(int k = 0; k < 8; k++)
                                 {
-                                    if(tmp[j] == '0') nbuf[i*8+j] = 0;
-                                    else nbuf[i*8+j] = 1;
+                                    if(tmp[j][k] == '0') nbuf[(num+j)*8+k] = 0;
+                                    else nbuf[(num+j)*8+k] = 1;
                                 }
                                 //Array.Copy(Convert.ToString(buf[i], 2).PadLeft(8, '0').Select(c => ushort.Parse(c.ToString())).ToArray(), 0, nbuf, i * 8, 8);
                             });
                             if(false)Parallel.For(0, mat.Height / 2, (i) =>
                             {
                                 y = i * 2;
-                                    char[] data = ['0', '0', '0'];
+                                    ushort[] data = [0, 0, 0];
                                     if (y != mat.Height - 1)
                                 {
                                     for (int j = 0; j < mat.Width / 2; j += 2)
